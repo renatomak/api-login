@@ -52,4 +52,17 @@ describe('1 - endpoint POST /users', () => {
         expect(json).toEqual({ message: 'O campo "name" deve ter pelo menos 3 caracteres' });
       });
   });
+
+  test('It will be validated that it is not possible to register a user without the email field', async () => {
+    await frisby
+      .post(`${url}/users`, {
+        name: 'user',
+        password: '123456',
+      })
+      .expect('status', 400)
+      .then((responseCreate) => {
+        const { json } = responseCreate;
+        expect(json).toEqual({ message: 'O campo "email" é obrigatório' });
+      });
+  });
 });
