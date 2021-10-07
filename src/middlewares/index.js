@@ -23,7 +23,15 @@ const validateNameLength = (req, res, next) => {
   next();
 };
 
+const validateIfTheEmailExists = (req, res, next) => {
+  const { email } = req.body;
+  if (!email || email === '') {
+    return res.status(STATUS_400_BAD_REQUEST).send({ message: 'O campo "email" é obrigatório' });
+  }
+}
+
 module.exports = {
     validateIfTheNameExists,
-    validateNameLength
+    validateNameLength, 
+    validateIfTheEmailExists,
 }
