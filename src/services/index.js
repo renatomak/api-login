@@ -5,8 +5,9 @@ const createUser = async (user) => {
   try {
     const { email } = user;
     const registeredEmail = await findByEmail(email);
+
     if(registeredEmail) {
-      throw new Error('Usuário já cadastrado!');
+      return { registered: true }
     }
     const result = await create(user);
     return result;

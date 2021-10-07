@@ -1,7 +1,7 @@
 const connect = require('../../config/conn');
 const { ObjectId } = require('mongodb');
 
-const COLLECTION_NAME = 'user';
+const COLLECTION_NAME = 'users';
 
 const create = async (user) =>
   connect().then(async (db) => {

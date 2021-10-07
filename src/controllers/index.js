@@ -4,6 +4,7 @@ const {
   STATUS_400_BAD_REQUEST,
   STATUS_200_OK,
   STATUS_201_CREATED,
+  STATUS_409_CONFLICT,
 } = require('../util');
 
 const addUser = rescue(async (req, res) => {
@@ -11,6 +12,10 @@ const addUser = rescue(async (req, res) => {
     const { name, email, password } = req.body;
 
     const user = await createUser({ name, email, password });
+
+    if (user.registered) {
+      return res.status(STATUS_409_CONFLICT).json({ message: 'Usuário já cadastrado!' })
+    }
 
     return res.status(STATUS_201_CREATED).json({ user });
   } catch (error) {
