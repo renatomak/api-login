@@ -2,11 +2,12 @@ const connect = require('../../config/conn');
 
 const COLLECTION_NAME = 'user';
 
-const create = async (name, email, password) => 
+const create = async (user) => 
     connect().then(async (db) => {
-        const user = await db.collection(COLLECTION_NAME)
-        .insertOne({ name, email, password});
-        return {...user, name, email };
+        const result = await db.collection(COLLECTION_NAME)
+        .insertOne(user);
+        const { name, email } = user;
+        return { name, email };
     });
 
 module.exports = {
