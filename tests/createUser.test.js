@@ -1,4 +1,7 @@
 const frisby = require('frisby');
+const { MongoClient } = require('mongodb');
+
+const mongoDbUrl = 'mongodb://localhost:27017/api-login';
 
 const url = 'http://localhost:3001';
 
@@ -10,6 +13,29 @@ const postUserMock = {
 };
 
 describe('1 - endpoint POST /users', () => {
+  let connection;
+  let db;
+
+  beforeAll(async () => {
+    connection = await MongoClient.connect(mongoDbUrl, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    db = connection.db('api-login');
+  });
+
+  beforeEach(async () => {
+    await db.collection('users').deleteMany({});
+    const users = {
+      name: 'admin', email: 'root@email.com', password: 'admin', role: 'admin' };
+    await db.collection('users').insertOne(users);
+  });
+
+  afterAll(async () => {
+    await connection.close();
+  });
+
+
   test('It will be valid that it is possible to register a user successfully', async () => {
     await frisby
       .post(`${url}/users`, {
@@ -23,6 +49,31 @@ describe('1 - endpoint POST /users', () => {
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual(postUserMock);
+      });
+  });
+
+  it('It will be validated that the "email" field is unique', async () => {
+    await frisby
+      .post(`${url}/users/`,
+        {
+          name: 'fulano de Tal',
+          email: 'fulanodetal@gmail.com',
+          password: '12345678',
+        })
+      .expect('status', 201);
+
+    await frisby
+      .post(`${url}/users/`,
+        {
+          name: 'Xablau',
+          email: 'fulanodetal@gmail.com',
+          password: '12345678',
+        })
+      .expect('status', 409)
+      .then((response) => {
+        const { body } = response;
+        const result = JSON.parse(body);
+        expect(result.message).toBe('Usuário já cadastrado!');
       });
   });
 
