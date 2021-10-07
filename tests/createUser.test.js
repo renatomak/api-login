@@ -49,7 +49,9 @@ describe('1 - endpoint POST /users', () => {
       .expect('status', 400)
       .then((responseCreate) => {
         const { json } = responseCreate;
-        expect(json).toEqual({ message: 'O campo "name" deve ter pelo menos 3 caracteres' });
+        expect(json).toEqual({
+          message: 'O campo "name" deve ter pelo menos 3 caracteres',
+        });
       });
   });
 
@@ -63,6 +65,54 @@ describe('1 - endpoint POST /users', () => {
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({ message: 'O campo "email" é obrigatório' });
+      });
+  });
+
+  test('It will be validated that it is not possible to register a user with an email in the wrong format - without @', async () => {
+    await frisby
+      .post(`${url}/users`, {
+        name: 'user',
+        email: 'usertest.br',
+        password: '123456',
+      })
+      .expect('status', 400)
+      .then((responseCreate) => {
+        const { json } = responseCreate;
+        expect(json).toEqual({
+          message: 'O "email" deve ter o formato "email@email.com"',
+        });
+      });
+  });
+
+  test('It will be validated that it is not possible to register a user with an email in the wrong format - without the provider', async () => {
+    await frisby
+      .post(`${url}/users`, {
+        name: 'user',
+        email: 'user@',
+        password: '123456',
+      })
+      .expect('status', 400)
+      .then((responseCreate) => {
+        const { json } = responseCreate;
+        expect(json).toEqual({
+          message: 'O "email" deve ter o formato "email@email.com"',
+        });
+      });
+  });
+
+  test('It will be validated that it is not possible to register a user with an email in the wrong format - without the user name', async () => {
+    await frisby
+      .post(`${url}/users`, {
+        name: 'user',
+        email: '@test.com.br',
+        password: '123456',
+      })
+      .expect('status', 400)
+      .then((responseCreate) => {
+        const { json } = responseCreate;
+        expect(json).toEqual({
+          message: 'O "email" deve ter o formato "email@email.com"',
+        });
       });
   });
 });
