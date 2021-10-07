@@ -1,5 +1,5 @@
 const express = require('express');
-const { addUser } = require('../controllers');
+const { addUser, readUserById } = require('../controllers');
 const Middleware = require('../middlewares');
 
 const router = express.Router();
@@ -13,5 +13,7 @@ router.post(
   Middleware.validateIfThePasswordExists,
   addUser
 );
+
+router.get('/users/:id', readUserById);
 
 module.exports = router;
