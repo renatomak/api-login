@@ -28,6 +28,7 @@ const validateIfTheEmailExists = (req, res, next) => {
   if (!email || email === '') {
     return res.status(STATUS_400_BAD_REQUEST).send({ message: 'O campo "email" é obrigatório' });
   }
+  next();
 }
 
 module.exports = {
