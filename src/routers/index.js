@@ -1,20 +1,16 @@
 const express = require('express');
 const { addUser } = require('../controllers');
-const {
-  validateIfTheNameExists,
-  validateNameLength,
-  validateIfTheEmailExists,
-  validateEmailFormat,
-} = require('../middlewares');
+const Middleware = require('../middlewares');
 
 const router = express.Router();
 
 router.post(
   '/users',
-  validateIfTheNameExists,
-  validateNameLength,
-  validateIfTheEmailExists,
-  validateEmailFormat,
+  Middleware.validateIfTheNameExists,
+  Middleware.validateNameLength,
+  Middleware.validateIfTheEmailExists,
+  Middleware.validateEmailFormat,
+  Middleware.validateIfThePasswordExists,
   addUser
 );
 
