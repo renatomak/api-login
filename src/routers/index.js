@@ -4,6 +4,7 @@ const {
   validateIfTheNameExists,
   validateNameLength,
   validateIfTheEmailExists,
+  validateEmailFormat,
 } = require('../middlewares');
 
 const router = express.Router();
@@ -13,6 +14,7 @@ router.post(
   validateIfTheNameExists,
   validateNameLength,
   validateIfTheEmailExists,
+  validateEmailFormat,
   addUser
 );
 

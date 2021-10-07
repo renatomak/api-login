@@ -7,6 +7,10 @@ const STATUS_404_NOT_FOUND = 404;
 const STATUS_409_CONFLICT = 409;
 const STATUS_422_UNPROCESSABLE_ENTITY = 422;
 
+const checkInvalidEmail = (email) => {
+  const regex = /\S+@\S+\.\S+/;
+  return !(regex.test(email));
+};
 
 const messageError = (message) =>
   `\n\n\n******Erro ao ${message}******\n\n\n\n`;
@@ -21,4 +25,5 @@ module.exports = {
   STATUS_409_CONFLICT,
   STATUS_422_UNPROCESSABLE_ENTITY,
   messageError,
+  checkInvalidEmail,
 };

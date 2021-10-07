@@ -1,4 +1,4 @@
-const { STATUS_400_BAD_REQUEST } = require('../util');
+const { STATUS_400_BAD_REQUEST, checkInvalidEmail } = require('../util');
 
 const validateIfTheNameExists = (req, res, next) => {
   const { name } = req.body;
@@ -31,8 +31,23 @@ const validateIfTheEmailExists = (req, res, next) => {
   next();
 }
 
+const validateEmailFormat = (req, res, next) => {
+  const { email } = req.body;
+
+  if (checkInvalidEmail(email)) {
+    return res
+      .status(STATUS_400_BAD_REQUEST)
+      .send({ message: 'O "email" deve ter o formato "email@email.com"' });
+  }
+  
+  next();
+};
+
+
+
 module.exports = {
     validateIfTheNameExists,
     validateNameLength, 
     validateIfTheEmailExists,
+    validateEmailFormat,
 }
