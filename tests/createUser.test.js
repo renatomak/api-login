@@ -25,4 +25,17 @@ describe('1 - endpoint POST /users', () => {
         expect(json).toEqual(postUserMock);
       });
   });
+
+  test('It will be validated that it is not possible to register an unnamed user', async () => {
+    await frisby
+      .post(`${url}/users`, {
+        email: 'user1@test.com.br',
+        password: '123456',
+      })
+      .expect('status', 400)
+      .then((responseCreate) => {
+        const { json } = responseCreate;
+        expect(json).toEqual({ message: 'O campo "name" é obrigatório' });
+      });
+  });
 });
