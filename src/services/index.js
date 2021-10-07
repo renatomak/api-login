@@ -1,12 +1,17 @@
-const { create, getUserById } = require('../models/');
+const { create, getUserById, findByEmail } = require('../models/');
 const { messageError } = require('../util');
 
 const createUser = async (user) => {
   try {
+    const { email } = user;
+    const registeredEmail = await findByEmail(email);
+    if(registeredEmail) {
+      throw new Error('Usuário já cadastrado!');
+    }
     const result = await create(user);
     return result;
   } catch (error) {
-    throw Error(error.message + messageError('cadastrar Usuários'));
+    throw Error(messageError(error.message, 'cadastrar Usuários'));
   }
 };
 

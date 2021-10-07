@@ -12,8 +12,8 @@ const checkInvalidEmail = (email) => {
   return !(regex.test(email));
 };
 
-const messageError = (message) =>
-  `\n\n\n******Erro ao ${message}******\n\n\n\n`;
+const messageError = (errorMSN, message) =>
+  `\n       ${errorMSN} \n****** Erro ao ${message} ******\n\n`;
 
 module.exports = {
   STATUS_200_OK,
