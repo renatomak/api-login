@@ -43,6 +43,16 @@ const validateEmailFormat = (req, res, next) => {
   next();
 };
 
+const validateIfThePasswordExists = (req, res, next) => {
+  const { password } = req.body;
+
+  if (!password || password === '') { 
+    return res.status(STATUS_400_BAD_REQUEST).send({ message: 'O campo "password" é obrigatório' });
+  }
+
+  next();
+}
+
 
 
 module.exports = {
@@ -50,4 +60,5 @@ module.exports = {
     validateNameLength, 
     validateIfTheEmailExists,
     validateEmailFormat,
+    validateIfThePasswordExists,
 }
