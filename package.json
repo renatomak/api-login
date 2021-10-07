@@ -1,0 +1,26 @@
+{
+  "name": "api-login",
+  "version": "1.0.0",
+  "description": "API login de usuario - fase tecnica para vaga de Dev Backend da HVEX",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/renatomak/hvex-api-login.git"
+  },
+  "author": "Renato Marques",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/renatomak/hvex-api-login/issues"
+  },
+  "homepage": "https://github.com/renatomak/hvex-api-login#readme",
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.13"
+  }
+}
