@@ -5,6 +5,7 @@ const {
   STATUS_200_OK,
   STATUS_201_CREATED,
   STATUS_409_CONFLICT,
+  STATUS_422_UNPROCESSABLE_ENTITY,
 } = require('../util');
 
 const addUser = rescue(async (req, res) => {
@@ -30,13 +31,17 @@ const readUserById = rescue(async (req, res) => {
   try {
     const { id } = req.params;
 
-    const result = await findUserById(id);
+    const { result } = await findUserById(id);
+
+    if (!result) {
+      throw new Error();
+    }
 
     return res.status(STATUS_200_OK).json(result);
   } catch (error) {
     return res
-      .status(STATUS_400_BAD_REQUEST)
-      .json({ message: 'Invalid fields ' + error.message });
+      .status(STATUS_422_UNPROCESSABLE_ENTITY)
+      .json({ message: 'Wrong id format' });
   }
 });
 

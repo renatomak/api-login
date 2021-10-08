@@ -5,7 +5,7 @@ const mongoDbUrl = 'mongodb://localhost:27017/api-login';
 
 const url = 'http://localhost:3001';
 
-describe('1 - Endpoint GET /users/:id', () => {
+describe('2 - Endpoint GET /users/:id', () => {
     let connection;
     let db;
   
@@ -29,7 +29,7 @@ describe('1 - Endpoint GET /users/:id', () => {
     });
   
   
-    it('It will be validated that the endpoint returns a user based on the route id', async () => {
+    test('It will be validated that the endpoint returns a user based on the route id', async () => {
       let result;
 
       await frisby
@@ -49,10 +49,20 @@ describe('1 - Endpoint GET /users/:id', () => {
         .expect('status', 200)
         .then((secondResponse) => {
           const { json } = secondResponse;
-          const userName = json.result.name;
-          const quantityuser = json.result.email;
+          const userName = json.name;
+          const quantityuser = json.email;
           expect(userName).toEqual('renato');
           expect(quantityuser).toEqual('renato@gmail.com');
+        });
+    });
+
+    it('It will be validated that it is not possible to list a user that does not exist', async () => {
+      await frisby.get(`${url}/users/999999`)
+        .expect('status', 422)
+        .then((secondResponse) => {
+          const { json } = secondResponse;
+          const { message } = json;
+          expect(message).toEqual('Wrong id format');
         });
     });
 });
