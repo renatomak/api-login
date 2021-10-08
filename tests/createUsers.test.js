@@ -12,7 +12,7 @@ const postUserMock = {
   },
 };
 
-describe('1 - endpoint POST /users', () => {
+describe('1 - Endpoint POST /users', () => {
   let connection;
   let db;
 
@@ -48,6 +48,7 @@ describe('1 - endpoint POST /users', () => {
       .expect('status', 201)
       .then((responseCreate) => {
         const { json } = responseCreate;
+        postUserMock.user = { ...postUserMock.user, _id: json.user._id}  
         expect(json).toEqual(postUserMock);
       });
   });

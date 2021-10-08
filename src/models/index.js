@@ -3,11 +3,10 @@ const { ObjectId } = require('mongodb');
 
 const COLLECTION_NAME = 'users';
 
-const create = async (user) =>
+const create = async ({name, email, password}) =>
   connect().then(async (db) => {
-    await db.collection(COLLECTION_NAME).insertOne(user);
-    const { name, email } = user;
-    return { name, email };
+    const result = await db.collection(COLLECTION_NAME).insertOne({ name, email, password });
+    return { _id: result.insertedId, name, email };
   });
 
 const getUserById = async (id) => {
@@ -24,6 +23,7 @@ const findByEmail = async (email) => {
     db.collection(COLLECTION_NAME).findOne({ email })
   );
 };
+
 
 module.exports = {
   create,
