@@ -1,5 +1,5 @@
 const express = require('express');
-const { addUser, readUserById, updateUser } = require('../controllers');
+const { create, read, update } = require('../controllers');
 const Middleware = require('../middlewares');
 
 const router = express.Router();
@@ -11,11 +11,11 @@ router.post(
   Middleware.validateIfTheEmailExists,
   Middleware.validateEmailFormat,
   Middleware.validateIfThePasswordExists,
-  addUser
+  create
 );
 
-router.get('/users/:id', readUserById);
+router.get('/users/:id', read);
 
-router.put('/users/:id', updateUser);
+router.put('/users/:id', update);
 
 module.exports = router;

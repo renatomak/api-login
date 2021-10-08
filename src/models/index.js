@@ -3,7 +3,7 @@ const { ObjectId } = require('mongodb');
 
 const COLLECTION_NAME = 'users';
 
-const create = async ({ name, email, password }) =>
+const createModel = async ({ name, email, password }) =>
   connect().then(async (db) => {
     const result = await db
       .collection(COLLECTION_NAME)
@@ -11,7 +11,7 @@ const create = async ({ name, email, password }) =>
     return { _id: result.insertedId, name, email };
   });
 
-const getUserById = async (id) => {
+const readByIdModel = async (id) => {
   if (!ObjectId.isValid(id)) {
     return null;
   }
@@ -20,20 +20,20 @@ const getUserById = async (id) => {
   );
 };
 
-const findByEmail = async (email) => {
+const findEmailModel = async (email) => {
   return connect().then((db) =>
     db.collection(COLLECTION_NAME).findOne({ email })
   );
 };
 
-const updateUser = async (user) => {
+const updateModel = async (user) => {
   const { id, name, email, password } = user;
-  
+
   if (!ObjectId.isValid(id)) {
     return null;
   }
 
-  await connect().then((db) =>{
+  await connect().then((db) => {
     db
       .collection(COLLECTION_NAME)
       .updateOne({ _id: ObjectId(id) }, [{ $set: { name, email, password }}]) }
@@ -43,8 +43,8 @@ const updateUser = async (user) => {
 };
 
 module.exports = {
-  create,
-  getUserById,
-  findByEmail,
-  updateUser,
+  createModel,
+  readByIdModel,
+  findEmailModel,
+  updateModel,
 };
