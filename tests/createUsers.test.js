@@ -27,7 +27,7 @@ describe('1 - Endpoint POST /users', () => {
   beforeEach(async () => {
     await db.collection('users').deleteMany({});
     const users = {
-      name: 'admin', email: 'root@email.com', password: 'admin', role: 'admin' };
+      name: 'admin', email: 'root@email.com', password: 'admin' };
     await db.collection('users').insertOne(users);
   });
 
