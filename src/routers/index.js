@@ -1,5 +1,5 @@
 const express = require('express');
-const { addUser, readUserById } = require('../controllers');
+const { addUser, readUserById, updateUser } = require('../controllers');
 const Middleware = require('../middlewares');
 
 const router = express.Router();
@@ -15,5 +15,7 @@ router.post(
 );
 
 router.get('/users/:id', readUserById);
+
+router.put('/users/:id', updateUser);
 
 module.exports = router;

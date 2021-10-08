@@ -1,5 +1,5 @@
 const rescue = require('express-rescue');
-const { createUser, findUserById } = require('../services');
+const { createUser, findUserById, updateUserById } = require('../services');
 const {
   STATUS_400_BAD_REQUEST,
   STATUS_200_OK,
@@ -39,13 +39,31 @@ const readUserById = rescue(async (req, res) => {
 
     return res.status(STATUS_200_OK).json(result);
   } catch (error) {
+    console.error(error.message);
     return res
       .status(STATUS_422_UNPROCESSABLE_ENTITY)
       .json({ message: 'Wrong id format' });
   }
 });
 
+const updateUser = rescue(async (req, res) => {
+  try {
+    const { body } = req;
+    const { id } = req.params;
+    const user = { ...body, id };
+
+    const result = await updateUserById(user);
+    console.log(result)
+
+    return res.status(STATUS_200_OK).json(result);
+  } catch (error) {
+    console.error(error.message);
+    return res.status(STATUS_422_UNPROCESSABLE_ENTITY).json({ message: 'Erro ou atualizar'})
+  }
+})
+
 module.exports = {
   addUser,
   readUserById,
+  updateUser,
 };

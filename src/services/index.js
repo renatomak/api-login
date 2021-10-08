@@ -1,4 +1,4 @@
-const { create, getUserById, findByEmail } = require('../models/');
+const { create, getUserById, findByEmail, updateUser } = require('../models/');
 const { messageError } = require('../util');
 
 const createUser = async (user) => {
@@ -26,4 +26,13 @@ const findUserById = async (id) => {
   }
 };
 
-module.exports = { createUser, findUserById };
+const updateUserById = async (user) => {
+  try {
+    const result = await updateUser(user);
+    return result;
+  } catch (error) {
+    throw Error(messageError(error.message, 'atualizar o usuário.'))
+  }
+}
+
+module.exports = { createUser, findUserById, updateUserById };
