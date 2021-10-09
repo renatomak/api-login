@@ -1,5 +1,11 @@
 const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
+const {
+  STATUS_201_CREATED,
+  STATUS_409_CONFLICT,
+  STATUS_200_OK,
+  STATUS_400_BAD_REQUEST,
+} = require('../src/util');
 
 const mongoDbUrl = 'mongodb://localhost:27017/api-login';
 
@@ -42,7 +48,7 @@ describe('3 - Endpoint PUT /users/:id', () => {
           password: '123456',
         },
       })
-      .expect('status', 201)
+      .expect('status', STATUS_201_CREATED)
       .then((responseCreate) => {
         const { json } = responseCreate;
         resultUserId = json.user._id;
@@ -54,9 +60,11 @@ describe('3 - Endpoint PUT /users/:id', () => {
         email: 'renato.mark@gmail.com',
         password: '123456',
       })
-      .expect('status', 200)
+      .expect('status', STATUS_200_OK)
       .then((secondResponse) => {
-        const { json: { user } } = secondResponse;
+        const {
+          json: { user },
+        } = secondResponse;
         const userName = user.name;
         const userEmail = user.email;
         expect(userName).toEqual('Renato Marques');
@@ -68,14 +76,14 @@ describe('3 - Endpoint PUT /users/:id', () => {
     let resultUserId;
 
     await frisby
-    .post(`${url}/users`, {
-      body: {
-        name: 'renato',
-        email: 'renato@test.com.br',
-        password: '123456',
-      },
-    })
-    .expect('status', 201);
+      .post(`${url}/users`, {
+        body: {
+          name: 'renato',
+          email: 'renato@test.com.br',
+          password: '123456',
+        },
+      })
+      .expect('status', STATUS_201_CREATED);
 
     await frisby
       .post(`${url}/users`, {
@@ -85,18 +93,17 @@ describe('3 - Endpoint PUT /users/:id', () => {
           password: '123456',
         },
       })
-      .expect('status', 201)
+      .expect('status', STATUS_201_CREATED)
       .then((responseCreate) => {
         const { json } = responseCreate;
         resultUserId = json.user._id;
       });
 
-
     await frisby
       .put(`${url}/users/${resultUserId}`, {
         email: 'renato@test.com.br',
       })
-      .expect('status', 409)
+      .expect('status', STATUS_409_CONFLICT)
       .then((secondResponse) => {
         const { json } = secondResponse;
         expect(json).toEqual({
@@ -116,7 +123,7 @@ describe('3 - Endpoint PUT /users/:id', () => {
           password: '123456',
         },
       })
-      .expect('status', 201)
+      .expect('status', STATUS_201_CREATED)
       .then((responseCreate) => {
         const { json } = responseCreate;
         resultUserId = json.user._id;
@@ -128,7 +135,7 @@ describe('3 - Endpoint PUT /users/:id', () => {
         email: 'renato.markgmail.com',
         password: '123456',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((secondResponse) => {
         const { json } = secondResponse;
         expect(json).toEqual({
@@ -136,13 +143,13 @@ describe('3 - Endpoint PUT /users/:id', () => {
         });
       });
 
-      await frisby
+    await frisby
       .put(`${url}/users/${resultUserId}`, {
         name: 'Renato Marques',
         email: '@gmail.com',
         password: '123456',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((secondResponse) => {
         const { json } = secondResponse;
         expect(json).toEqual({
@@ -150,13 +157,13 @@ describe('3 - Endpoint PUT /users/:id', () => {
         });
       });
 
-      await frisby
+    await frisby
       .put(`${url}/users/${resultUserId}`, {
         name: 'Renato Marques',
         email: 'renato.mark@',
         password: '123456',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((secondResponse) => {
         const { json } = secondResponse;
         expect(json).toEqual({
@@ -176,22 +183,22 @@ describe('3 - Endpoint PUT /users/:id', () => {
           password: '123456',
         },
       })
-      .expect('status', 201)
+      .expect('status', STATUS_201_CREATED)
       .then((responseCreate) => {
         const { json } = responseCreate;
         resultUserId = json.user._id;
       });
 
-
     await frisby
       .put(`${url}/users/${resultUserId}`, {
         name: 'us',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((secondResponse) => {
         const { json } = secondResponse;
-        expect(json).toEqual({ message: 'The "name" field must be at least 3 characters long' });
+        expect(json).toEqual({
+          message: 'The "name" field must be at least 3 characters long',
+        });
       });
   });
-
 });

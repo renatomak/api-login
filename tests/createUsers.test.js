@@ -1,5 +1,6 @@
 const frisby = require('frisby');
 const { MongoClient } = require('mongodb');
+const { STATUS_201_CREATED, STATUS_409_CONFLICT, STATUS_400_BAD_REQUEST } = require('../src/util');
 
 const mongoDbUrl = 'mongodb://localhost:27017/api-login';
 
@@ -45,7 +46,7 @@ describe('1 - Endpoint POST /users', () => {
           password: '123456',
         },
       })
-      .expect('status', 201)
+      .expect('status', STATUS_201_CREATED)
       .then((responseCreate) => {
         const { json } = responseCreate;
         postUserMock.user = { ...postUserMock.user, _id: json.user._id}  
@@ -61,7 +62,7 @@ describe('1 - Endpoint POST /users', () => {
           email: 'fulanodetal@gmail.com',
           password: '12345678',
         })
-      .expect('status', 201);
+      .expect('status', STATUS_201_CREATED);
 
     await frisby
       .post(`${url}/users/`,
@@ -70,7 +71,7 @@ describe('1 - Endpoint POST /users', () => {
           email: 'fulanodetal@gmail.com',
           password: '12345678',
         })
-      .expect('status', 409)
+      .expect('status', STATUS_409_CONFLICT)
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
@@ -84,7 +85,7 @@ describe('1 - Endpoint POST /users', () => {
         email: 'user1@test.com.br',
         password: '123456',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({ message: 'The "name" field is mandatory.' });
@@ -98,7 +99,7 @@ describe('1 - Endpoint POST /users', () => {
         email: 'user1@test.com.br',
         password: '123456',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({
@@ -113,7 +114,7 @@ describe('1 - Endpoint POST /users', () => {
         name: 'user',
         password: '123456',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({ message: 'The "email" field is mandatory' });
@@ -127,7 +128,7 @@ describe('1 - Endpoint POST /users', () => {
         email: 'usertest.br',
         password: '123456',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({
@@ -143,7 +144,7 @@ describe('1 - Endpoint POST /users', () => {
         email: 'user@',
         password: '123456',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({
@@ -159,7 +160,7 @@ describe('1 - Endpoint POST /users', () => {
         email: '@test.com.br',
         password: '123456',
       })
-      .expect('status', 400)
+      .expect('status', STATUS_400_BAD_REQUEST)
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({
