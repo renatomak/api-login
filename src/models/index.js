@@ -40,9 +40,14 @@ const updateModel = async (user) => {
   return { user: { _id, name, email } };
 };
 
+const deleteModel = async (id) => {
+  await connect().then((db) => db.collection(COLLECTION_NAME).deleteOne({ _id: ObjectId(id)}))
+}
+
 module.exports = {
   createModel,
   readByIdModel,
   findEmailModel,
   updateModel,
+  deleteModel,
 };
