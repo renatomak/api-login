@@ -48,9 +48,9 @@ describe('2 - Endpoint GET /users/:id', () => {
       await frisby.get(`${url}/users/${result.user._id}`)
         .expect('status', 200)
         .then((secondResponse) => {
-          const { json } = secondResponse;
-          const userName = json.name;
-          const quantityuser = json.email;
+          const { json: { user } } = secondResponse;
+          const userName = user.name;
+          const quantityuser = user.email;
           expect(userName).toEqual('renato');
           expect(quantityuser).toEqual('renato@gmail.com');
         });

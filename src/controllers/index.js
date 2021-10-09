@@ -34,7 +34,7 @@ const read = rescue(async (req, res) => {
   try {
     const { id } = req.params;
 
-    const { result } = await readByIdService(id);
+    const result = await readByIdService(id);
 
     if (!result) {
       throw new Error();
@@ -56,7 +56,6 @@ const update = rescue(async (req, res) => {
     const user = { ...body, id };
 
     const result = await updateService(user);
-    console.log(result);
 
     return res.status(STATUS_200_OK).json(result);
   } catch (error) {

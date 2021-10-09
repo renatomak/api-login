@@ -19,8 +19,7 @@ const createService = async (user) => {
 const readByIdService = async (id) => {
   try {
     const result = await readByIdModel(id);
-
-    return { result };
+    return result;
   } catch (error) {
     throw Error(error.message + messageError('search Users by ID'));
   }

@@ -8,16 +8,18 @@ const createModel = async ({ name, email, password }) =>
     const result = await db
       .collection(COLLECTION_NAME)
       .insertOne({ name, email, password });
-    return { _id: result.insertedId, name, email };
+    const user = { _id: result.insertedId, name, email };
+    return user;
   });
 
 const readByIdModel = async (id) => {
   if (!ObjectId.isValid(id)) {
     return null;
   }
-  return connect().then((db) =>
-    db.collection(COLLECTION_NAME).findOne(ObjectId(id))
-  );
+  return connect().then(async (db) => {
+    const user = await db.collection(COLLECTION_NAME).findOne(ObjectId(id));
+    return { user };
+  });
 };
 
 const findEmailModel = async (email) => {
@@ -34,12 +36,11 @@ const updateModel = async (user) => {
   }
 
   await connect().then((db) => {
-    db
-      .collection(COLLECTION_NAME)
-      .updateOne({ _id: ObjectId(id) }, [{ $set: { name, email, password }}]) }
-  );
-
-  return { _id: id, name, email };
+    db.collection(COLLECTION_NAME).updateOne({ _id: ObjectId(id) }, [
+      { $set: { name, email, password } },
+    ]);
+  });
+  return { user: { _id: id, name, email } };
 };
 
 module.exports = {
