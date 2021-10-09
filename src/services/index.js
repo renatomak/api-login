@@ -4,6 +4,7 @@ const {
   createModel,
   readByIdModel,
   updateModel,
+  deleteModel,
 } = require('../models');
 const { messageError } = require('../util');
 
@@ -34,10 +35,10 @@ const readByIdService = async (id) => {
 const updateService = async (user) => {
   try {
     const { email } = user;
-    
+
     if (email) {
       const registeredEmail = await findEmailModel(email);
-      if (registeredEmail.user && user._id != registeredEmail.user._id) { 
+      if (registeredEmail.user && user._id != registeredEmail.user._id) {
         return { registered: true };
       }
     }
@@ -49,4 +50,19 @@ const updateService = async (user) => {
   }
 };
 
-module.exports = { createService, readByIdService, updateService };
+const deleteService = async (id) => {
+  try {
+    await deleteModel(id);
+
+    return true;
+  } catch (error) {
+    throw Error(messageError(error.message, 'delete to user'));
+  }
+};
+
+module.exports = {
+  createService,
+  readByIdService,
+  updateService,
+  deleteService,
+};
