@@ -63,7 +63,7 @@ describe('4 - Endpoint DELETE /users/:id', () => {
       });
   });
 
-  test('4.2 - It will be validated that it is not possible to delete a user that does not exist', async () => {
+  test('4.2 - Test for the case when trying to delete non-existent user', async () => {
     await frisby
       .delete(`${url}/users/999999`)
       .expect('status', STATUS_404_NOT_FOUND)
