@@ -74,7 +74,7 @@ describe('1 - Endpoint POST /users', () => {
       .then((response) => {
         const { body } = response;
         const result = JSON.parse(body);
-        expect(result.message).toBe('Usuário já cadastrado!');
+        expect(result.message).toBe('User already registered!');
       });
   });
 
@@ -87,7 +87,7 @@ describe('1 - Endpoint POST /users', () => {
       .expect('status', 400)
       .then((responseCreate) => {
         const { json } = responseCreate;
-        expect(json).toEqual({ message: 'O campo "name" é obrigatório' });
+        expect(json).toEqual({ message: 'The "name" field is mandatory.' });
       });
   });
 
@@ -102,7 +102,7 @@ describe('1 - Endpoint POST /users', () => {
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({
-          message: 'O campo "name" deve ter pelo menos 3 caracteres',
+          message: 'The "name" field must be at least 3 characters long',
         });
       });
   });
@@ -116,7 +116,7 @@ describe('1 - Endpoint POST /users', () => {
       .expect('status', 400)
       .then((responseCreate) => {
         const { json } = responseCreate;
-        expect(json).toEqual({ message: 'O campo "email" é obrigatório' });
+        expect(json).toEqual({ message: 'The "email" field is mandatory' });
       });
   });
 
@@ -131,7 +131,7 @@ describe('1 - Endpoint POST /users', () => {
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({
-          message: 'O "email" deve ter o formato "email@email.com"',
+          message: 'The "email" must have the format "email@email.com"',
         });
       });
   });
@@ -147,7 +147,7 @@ describe('1 - Endpoint POST /users', () => {
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({
-          message: 'O "email" deve ter o formato "email@email.com"',
+          message: 'The "email" must have the format "email@email.com"',
         });
       });
   });
@@ -163,7 +163,7 @@ describe('1 - Endpoint POST /users', () => {
       .then((responseCreate) => {
         const { json } = responseCreate;
         expect(json).toEqual({
-          message: 'O "email" deve ter o formato "email@email.com"',
+          message: 'The "email" must have the format "email@email.com"',
         });
       });
   });

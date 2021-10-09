@@ -6,7 +6,7 @@ const validateIfTheNameExists = (req, res, next) => {
   if (!name)
     return res
       .status(STATUS_400_BAD_REQUEST)
-      .send({ message: 'O campo "name" é obrigatório' });
+      .send({ message: 'The "name" field is mandatory.' });
 
   next();
 };
@@ -17,7 +17,7 @@ const validateNameLength = (req, res, next) => {
   if (name.length < 3) {
     return res
       .status(STATUS_400_BAD_REQUEST)
-      .send({ message: 'O campo "name" deve ter pelo menos 3 caracteres' });
+      .send({ message: 'The "name" field must be at least 3 characters long' });
   }
   
   next();
@@ -26,7 +26,7 @@ const validateNameLength = (req, res, next) => {
 const validateIfTheEmailExists = (req, res, next) => {
   const { email } = req.body;
   if (!email || email === '') {
-    return res.status(STATUS_400_BAD_REQUEST).send({ message: 'O campo "email" é obrigatório' });
+    return res.status(STATUS_400_BAD_REQUEST).send({ message: 'The "email" field is mandatory' });
   }
   next();
 }
@@ -37,7 +37,7 @@ const validateEmailFormat = (req, res, next) => {
   if (checkInvalidEmail(email)) {
     return res
       .status(STATUS_400_BAD_REQUEST)
-      .send({ message: 'O "email" deve ter o formato "email@email.com"' });
+      .send({ message: 'The "email" must have the format "email@email.com"' });
   }
   
   next();

@@ -17,7 +17,7 @@ const create = rescue(async (req, res) => {
     if (user.registered) {
       return res
         .status(STATUS_409_CONFLICT)
-        .json({ message: 'Usuário já cadastrado!' });
+        .json({ message: 'User already registered!' });
     }
 
     return res.status(STATUS_201_CREATED).json({ user });
@@ -63,7 +63,7 @@ const update = rescue(async (req, res) => {
     console.error(error.message);
     return res
       .status(STATUS_422_UNPROCESSABLE_ENTITY)
-      .json({ message: 'Erro ou atualizar' });
+      .json({ message: 'Error while updating' });
   }
 });
 

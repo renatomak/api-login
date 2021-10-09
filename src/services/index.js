@@ -12,7 +12,7 @@ const createService = async (user) => {
     const result = await  createModel(user);
     return result;
   } catch (error) {
-    throw Error(messageError(error.message, 'cadastrar Usuários'));
+    throw Error(messageError(error.message, 'register users'));
   }
 };
 
@@ -22,7 +22,7 @@ const readByIdService = async (id) => {
 
     return { result };
   } catch (error) {
-    throw Error(error.message + messageError('buscar Usuários por ID'));
+    throw Error(error.message + messageError('search Users by ID'));
   }
 };
 
@@ -31,7 +31,7 @@ const updateService = async (user) => {
     const result = await updateModel(user);
     return result;
   } catch (error) {
-    throw Error(messageError(error.message, 'atualizar o usuário.'))
+    throw Error(messageError(error.message, 'update to user'))
   }
 }
 
