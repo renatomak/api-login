@@ -29,7 +29,7 @@ describe('2 - Endpoint GET /users/:id', () => {
     });
   
   
-    test('It will be validated that the endpoint returns a user based on the route id', async () => {
+    test('2.1 - It will be validated that the endpoint returns a user based on the route id', async () => {
       let result;
 
       await frisby
@@ -56,7 +56,7 @@ describe('2 - Endpoint GET /users/:id', () => {
         });
     });
 
-    it('It will be validated that it is not possible to list a user that does not exist', async () => {
+    it('2.2 - It will be validated that it is not possible to list a user that does not exist', async () => {
       await frisby.get(`${url}/users/999999`)
         .expect('status', 422)
         .then((secondResponse) => {

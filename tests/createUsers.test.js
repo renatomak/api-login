@@ -36,7 +36,7 @@ describe('1 - Endpoint POST /users', () => {
   });
 
 
-  test('It will be valid that it is possible to register a user successfully', async () => {
+  test('1.1 - It will be valid that it is possible to register a user successfully', async () => {
     await frisby
       .post(`${url}/users`, {
         body: {
@@ -53,7 +53,7 @@ describe('1 - Endpoint POST /users', () => {
       });
   });
 
-  it('It will be validated that the "email" field is unique', async () => {
+  it('1.2 - It will be validated that the "email" field is unique', async () => {
     await frisby
       .post(`${url}/users/`,
         {
@@ -78,7 +78,7 @@ describe('1 - Endpoint POST /users', () => {
       });
   });
 
-  test('It will be validated that it is not possible to register an unnamed user', async () => {
+  test('1.3 - It will be validated that it is not possible to register an unnamed user', async () => {
     await frisby
       .post(`${url}/users`, {
         email: 'user1@test.com.br',
@@ -91,7 +91,7 @@ describe('1 - Endpoint POST /users', () => {
       });
   });
 
-  test('It will be validated that it is not possible to register a user with a name of less than 3 characters', async () => {
+  test('1.4 - It will be validated that it is not possible to register a user with a name of less than 3 characters', async () => {
     await frisby
       .post(`${url}/users`, {
         name: 'us',
@@ -107,7 +107,7 @@ describe('1 - Endpoint POST /users', () => {
       });
   });
 
-  test('It will be validated that it is not possible to register a user without the email field', async () => {
+  test('1.5 - It will be validated that it is not possible to register a user without the email field', async () => {
     await frisby
       .post(`${url}/users`, {
         name: 'user',
@@ -120,7 +120,7 @@ describe('1 - Endpoint POST /users', () => {
       });
   });
 
-  test('It will be validated that it is not possible to register a user with an email in the wrong format - without @', async () => {
+  test('1.6 - It will be validated that it is not possible to register a user with an email in the wrong format - without @', async () => {
     await frisby
       .post(`${url}/users`, {
         name: 'user',
@@ -136,7 +136,7 @@ describe('1 - Endpoint POST /users', () => {
       });
   });
 
-  test('It will be validated that it is not possible to register a user with an email in the wrong format - without the provider', async () => {
+  test('1.7 - It will be validated that it is not possible to register a user with an email in the wrong format - without the provider', async () => {
     await frisby
       .post(`${url}/users`, {
         name: 'user',
@@ -152,7 +152,7 @@ describe('1 - Endpoint POST /users', () => {
       });
   });
 
-  test('It will be validated that it is not possible to register a user with an email in the wrong format - without the user name', async () => {
+  test('1.8 - It will be validated that it is not possible to register a user with an email in the wrong format - without the user name', async () => {
     await frisby
       .post(`${url}/users`, {
         name: 'user',

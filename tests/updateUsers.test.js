@@ -31,7 +31,7 @@ describe('3 - Endpoint PUT /users/:id', () => {
     await connection.close();
   });
 
-  test('It will be validated that it is possible to update a user successfully', async () => {
+  test('3.1 - It will be validated that it is possible to update a user successfully', async () => {
     let resultUserId;
 
     await frisby
@@ -61,6 +61,47 @@ describe('3 - Endpoint PUT /users/:id', () => {
         const userEmail = user.email;
         expect(userName).toEqual('Renato Marques');
         expect(userEmail).toEqual('renato.mark@gmail.com');
+      });
+  });
+
+  test('3.2 - It will be validated that the "email" field is unique', async () => {
+    let resultUserId;
+
+    await frisby
+    .post(`${url}/users`, {
+      body: {
+        name: 'renato',
+        email: 'renato@test.com.br',
+        password: '123456',
+      },
+    })
+    .expect('status', 201);
+
+    await frisby
+      .post(`${url}/users`, {
+        body: {
+          name: 'user',
+          email: 'user@test.com.br',
+          password: '123456',
+        },
+      })
+      .expect('status', 201)
+      .then((responseCreate) => {
+        const { json } = responseCreate;
+        resultUserId = json.user._id;
+      });
+
+
+    await frisby
+      .put(`${url}/users/${resultUserId}`, {
+        email: 'renato@test.com.br',
+      })
+      .expect('status', 409)
+      .then((secondResponse) => {
+        const { json } = secondResponse;
+        expect(json).toEqual({
+          message: 'User already registered!',
+        });
       });
   });
 });
