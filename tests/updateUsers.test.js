@@ -104,4 +104,64 @@ describe('3 - Endpoint PUT /users/:id', () => {
         });
       });
   });
+
+  test('3.3 - It will be validated that it is not possible to update a record with an invalid email field.', async () => {
+    let resultUserId;
+
+    await frisby
+      .post(`${url}/users`, {
+        body: {
+          name: 'user',
+          email: 'user@test.com.br',
+          password: '123456',
+        },
+      })
+      .expect('status', 201)
+      .then((responseCreate) => {
+        const { json } = responseCreate;
+        resultUserId = json.user._id;
+      });
+
+    await frisby
+      .put(`${url}/users/${resultUserId}`, {
+        name: 'Renato Marques',
+        email: 'renato.markgmail.com',
+        password: '123456',
+      })
+      .expect('status', 400)
+      .then((secondResponse) => {
+        const { json } = secondResponse;
+        expect(json).toEqual({
+          message: 'The "email" must have the format "email@email.com"',
+        });
+      });
+
+      await frisby
+      .put(`${url}/users/${resultUserId}`, {
+        name: 'Renato Marques',
+        email: '@gmail.com',
+        password: '123456',
+      })
+      .expect('status', 400)
+      .then((secondResponse) => {
+        const { json } = secondResponse;
+        expect(json).toEqual({
+          message: 'The "email" must have the format "email@email.com"',
+        });
+      });
+
+      await frisby
+      .put(`${url}/users/${resultUserId}`, {
+        name: 'Renato Marques',
+        email: 'renato.mark@',
+        password: '123456',
+      })
+      .expect('status', 400)
+      .then((secondResponse) => {
+        const { json } = secondResponse;
+        expect(json).toEqual({
+          message: 'The "email" must have the format "email@email.com"',
+        });
+      });
+  });
 });
