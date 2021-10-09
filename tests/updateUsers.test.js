@@ -164,4 +164,34 @@ describe('3 - Endpoint PUT /users/:id', () => {
         });
       });
   });
+
+  test('3.4 - It will be validated that it is not possible to update a record with an invalid name field.', async () => {
+    let resultUserId;
+
+    await frisby
+      .post(`${url}/users`, {
+        body: {
+          name: 'user',
+          email: 'user@test.com.br',
+          password: '123456',
+        },
+      })
+      .expect('status', 201)
+      .then((responseCreate) => {
+        const { json } = responseCreate;
+        resultUserId = json.user._id;
+      });
+
+
+    await frisby
+      .put(`${url}/users/${resultUserId}`, {
+        name: 'us',
+      })
+      .expect('status', 400)
+      .then((secondResponse) => {
+        const { json } = secondResponse;
+        expect(json).toEqual({ message: 'The "name" field must be at least 3 characters long' });
+      });
+  });
+
 });

@@ -47,7 +47,7 @@ const validateIfThePasswordExists = (req, res, next) => {
   const { password } = req.body;
 
   if (!password || password === '') { 
-    return res.status(STATUS_400_BAD_REQUEST).send({ message: 'O campo "password" é obrigatório' });
+    return res.status(STATUS_400_BAD_REQUEST).send({ message: 'The "password" field is required' });
   }
 
   next();
