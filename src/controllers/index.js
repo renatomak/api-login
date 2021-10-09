@@ -1,6 +1,6 @@
 const rescue = require('express-rescue');
 const { validateEmailFormat, validateNameLength } = require('../middlewares');
-const { createService, readByIdService, updateService } = require('../services');
+const { createService, readByIdService, updateService, deleteService } = require('../services');
 const {
   STATUS_400_BAD_REQUEST,
   STATUS_200_OK,
@@ -8,6 +8,7 @@ const {
   STATUS_409_CONFLICT,
   STATUS_422_UNPROCESSABLE_ENTITY,
   checkInvalidEmail,
+  STATUS_404_NOT_FOUND,
 } = require('../util');
 
 const create = rescue(async (req, res) => {
@@ -74,8 +75,23 @@ const update = rescue(async (req, res) => {
   }
 });
 
+const deleteUser = rescue(async (req, res) => {
+  try {
+    const { id } = req.params;
+    await deleteService(id);
+
+    return res.status(STATUS_200_OK).json({ message: 'user removed successfully'});
+  } catch (error) {
+    console.error(error.message);
+    return res
+      .status(STATUS_404_NOT_FOUND)
+      .json({ message: 'Error while delete' });
+  }
+})
+
 module.exports = {
   create,
   read,
   update,
+  deleteUser,
 };
