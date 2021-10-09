@@ -38,7 +38,7 @@ const read = rescue(async (req, res) => {
 
     const result = await readByIdService(id);
 
-    if (!result) {
+    if (!(result.user)) {
       throw new Error();
     }
 
@@ -47,7 +47,7 @@ const read = rescue(async (req, res) => {
     console.error(error.message);
     return res
       .status(STATUS_422_UNPROCESSABLE_ENTITY)
-      .json({ message: 'Wrong id format' });
+      .json({ message: 'User not found' });
   }
 });
 
