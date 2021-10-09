@@ -32,7 +32,6 @@ describe('3 - Endpoint PUT /users/:id', () => {
   });
 
   test('It will be validated that it is possible to update a user successfully', async () => {
-    let result;
     let resultUserId;
 
     await frisby
@@ -53,6 +52,7 @@ describe('3 - Endpoint PUT /users/:id', () => {
       .put(`${url}/users/${resultUserId}`, {
         name: 'Renato Marques',
         email: 'renato.mark@gmail.com',
+        password: '123456',
       })
       .expect('status', 200)
       .then((secondResponse) => {

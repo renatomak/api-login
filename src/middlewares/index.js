@@ -14,7 +14,7 @@ const validateIfTheNameExists = (req, res, next) => {
 const validateNameLength = (req, res, next) => {
   const { name } = req.body;
 
-  if (name.length < 3) {
+  if (name && name.length < 3) {
     return res
       .status(STATUS_400_BAD_REQUEST)
       .send({ message: 'The "name" field must be at least 3 characters long' });
@@ -34,7 +34,7 @@ const validateIfTheEmailExists = (req, res, next) => {
 const validateEmailFormat = (req, res, next) => {
   const { email } = req.body;
 
-  if (checkInvalidEmail(email)) {
+  if (email && checkInvalidEmail(email)) {
     return res
       .status(STATUS_400_BAD_REQUEST)
       .send({ message: 'The "email" must have the format "email@email.com"' });

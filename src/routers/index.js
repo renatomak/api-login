@@ -16,6 +16,6 @@ router.post(
 
 router.get('/users/:id', read);
 
-router.put('/users/:id', update);
+router.put('/users/:id', Middleware.validateEmailFormat, Middleware.validateNameLength, update);
 
 module.exports = router;

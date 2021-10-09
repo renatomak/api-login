@@ -1,4 +1,5 @@
 const rescue = require('express-rescue');
+const { validateEmailFormat, validateNameLength } = require('../middlewares');
 const { createService, readByIdService, updateService } = require('../services');
 const {
   STATUS_400_BAD_REQUEST,
@@ -6,6 +7,7 @@ const {
   STATUS_201_CREATED,
   STATUS_409_CONFLICT,
   STATUS_422_UNPROCESSABLE_ENTITY,
+  checkInvalidEmail,
 } = require('../util');
 
 const create = rescue(async (req, res) => {
@@ -23,10 +25,9 @@ const create = rescue(async (req, res) => {
     return res.status(STATUS_201_CREATED).json({ user });
   } catch (error) {
     console.error(error.message);
-
     return res
       .status(STATUS_400_BAD_REQUEST)
-      .json({ message: 'Invalid fields' + error.message });
+      .json({ message: 'Invalid fields'});
   }
 });
 
@@ -53,9 +54,16 @@ const update = rescue(async (req, res) => {
   try {
     const { body } = req;
     const { id } = req.params;
-    const user = { ...body, id };
+    const user = { ...body, _id: id };
 
     const result = await updateService(user);
+    console.log('RESULT: ', result)
+
+    if (result?.registered) {
+      return res
+        .status(STATUS_409_CONFLICT)
+        .json({ message: 'User already registered!' });
+    }
 
     return res.status(STATUS_200_OK).json(result);
   } catch (error) {

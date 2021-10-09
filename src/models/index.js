@@ -23,24 +23,21 @@ const readByIdModel = async (id) => {
 };
 
 const findEmailModel = async (email) => {
-  return connect().then((db) =>
+  const result = await connect().then((db) =>
     db.collection(COLLECTION_NAME).findOne({ email })
   );
+  return { user: result};
 };
 
 const updateModel = async (user) => {
-  const { id, name, email, password } = user;
-
-  if (!ObjectId.isValid(id)) {
-    return null;
-  }
+  const { _id, name, email, password } = user;
 
   await connect().then((db) => {
-    db.collection(COLLECTION_NAME).updateOne({ _id: ObjectId(id) }, [
+    db.collection(COLLECTION_NAME).updateOne({ _id: ObjectId(_id) }, [
       { $set: { name, email, password } },
     ]);
   });
-  return { user: { _id: id, name, email } };
+  return { user: { _id, name, email } };
 };
 
 module.exports = {
