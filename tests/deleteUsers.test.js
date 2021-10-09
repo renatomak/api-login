@@ -4,6 +4,7 @@ const {
   STATUS_201_CREATED,
   STATUS_200_OK,
   STATUS_422_UNPROCESSABLE_ENTITY,
+  STATUS_404_NOT_FOUND,
 } = require('../src/util');
 
 const mongoDbUrl = 'mongodb://localhost:27017/api-login';
@@ -62,4 +63,14 @@ describe('4 - Endpoint DELETE /users/:id', () => {
       });
   });
 
+  test('4.2 - It will be validated that it is not possible to delete a user that does not exist', async () => {
+    await frisby
+      .delete(`${url}/users/999999`)
+      .expect('status', STATUS_404_NOT_FOUND)
+      .then((secondResponse) => {
+        const { json } = secondResponse;
+        const { message } = json;
+        expect(message).toEqual('Error while delete');
+      });
+  });
 });
